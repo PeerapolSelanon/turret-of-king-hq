@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Turret of King HQ</title>
+</head>
+<body>
+<style>
+:root {
+	--bg: #f5eedd;
+	--panel: #fffdf6;
+	--panel2: #f7efdc;
+	--ink: #33270f;
+	--muted: #7d6c4e;
+	--line: #e0d2b2;
+	--gold: #a87b24;
+	--gold-bright: #c8952e;
+	--gold-soft: #f3e6c4;
+	--green: #4c7a3d;
+	--green-bg: #eaf1e2;
+	--red: #b3402e;
+	--red-bg: #f9e8e2;
+	--chip-bg: #33270f;
+	--chip-ink: #f3e6c4;
+	--hero-bg1: #3a2a16;
+	--hero-bg2: #241a0e;
+	--hero-ink: #f0e4cc;
+	--hero-gold: #ffd24a;
+}
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) {
+		--bg: #1d1509;
+		--panel: #2a2012;
+		--panel2: #241b0e;
+		--ink: #efe3c8;
+		--muted: #b5a37e;
+		--line: #46381e;
+		--gold: #e3b34f;
+		--gold-bright: #ffd24a;
+		--gold-soft: #3b2e15;
+		--green: #9dc186;
+		--green-bg: #263420;
+		--red: #e07a5f;
+		--red-bg: #3a241c;
+		--chip-bg: #120d05;
+		--chip-ink: #ecd9a4;
+	}
+}
+:root[data-theme="dark"] {
+	--bg: #1d1509;
+	--panel: #2a2012;
+	--panel2: #241b0e;
+	--ink: #efe3c8;
+	--muted: #b5a37e;
+	--line: #46381e;
+	--gold: #e3b34f;
+	--gold-bright: #ffd24a;
+	--gold-soft: #3b2e15;
+	--green: #9dc186;
+	--green-bg: #263420;
+	--red: #e07a5f;
+	--red-bg: #3a241c;
+	--chip-bg: #120d05;
+	--chip-ink: #ecd9a4;
+}
+* { box-sizing: border-box; }
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--ink);
+	font-family: "Leelawadee UI", "Noto Sans Thai", Thonburi, "Segoe UI", sans-serif;
+	font-size: 16.5px;
+	line-height: 1.75;
+}
+.hex {
+	display: inline-block;
+	width: 13px;
+	height: 15px;
+	clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+	background: var(--gold);
+	margin-right: 9px;
+	flex: none;
+}
+/* ==== แถบนำทาง ==== */
+.topbar {
+	position: sticky;
+	top: 0;
+	z-index: 10;
+	background: var(--hero-bg2);
+	border-bottom: 2px solid var(--gold);
+	overflow-x: auto;
+}
+.topbar .in {
+	max-width: 1060px;
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 0 18px;
+	white-space: nowrap;
+}
+.topbar .brand {
+	color: var(--hero-gold);
+	font-weight: 700;
+	font-size: 14px;
+	letter-spacing: 0.1em;
+	margin-right: 14px;
+	padding: 11px 0;
+}
+.topbar a {
+	color: #cdbd9a;
+	text-decoration: none;
+	font-size: 14px;
+	padding: 11px 11px;
+}
+.topbar a:hover, .topbar a:focus-visible { color: var(--hero-gold); outline: none; }
+/* ==== Hero ==== */
+.hero {
+	background:
+		radial-gradient(ellipse at 50% -30%, #59401f 0%, transparent 55%),
+		linear-gradient(175deg, var(--hero-bg1), var(--hero-bg2) 70%);
+	color: var(--hero-ink);
+	border-bottom: 4px solid var(--gold);
+	padding: 58px 24px 46px;
+	text-align: center;
+}
+.hero .logo {
+	font-size: clamp(34px, 6vw, 56px);
+	font-weight: 800;
+	letter-spacing: 0.04em;
+	color: var(--hero-gold);
+	text-shadow: 0 2px 0 #5a3c10, 0 4px 0 #3a2708, 0 8px 18px rgba(0,0,0,0.45);
+	margin: 0;
+	line-height: 1.15;
+}
+.hero .tag {
+	margin: 12px auto 0;
+	max-width: 58ch;
+	color: #d8c8a4;
+	font-size: 17px;
+}
+.hero .alpha {
+	display: inline-block;
+	margin-top: 18px;
+	font-size: 12.5px;
+	letter-spacing: 0.16em;
+	font-weight: 700;
+	color: var(--hero-bg2);
+	background: var(--hero-gold);
+	border-radius: 999px;
+	padding: 4px 16px;
+}
+/* ==== โครงหลัก ==== */
+main { max-width: 1060px; margin: 0 auto; padding: 20px 22px 90px; }
+h2 {
+	display: flex;
+	align-items: center;
+	font-size: 24px;
+	margin: 54px 0 6px;
+	text-wrap: balance;
+}
+.lede { color: var(--muted); margin: 0 0 20px; max-width: 70ch; }
+h3 { font-size: 16.5px; margin: 18px 0 6px; }
+p { margin: 8px 0; max-width: 70ch; }
+ul, ol { margin: 8px 0; padding-left: 22px; max-width: 68ch; }
+li { margin: 4px 0; }
+code {
+	font-family: ui-monospace, Consolas, monospace;
+	font-size: 0.88em;
+	background: var(--gold-soft);
+	border-radius: 5px;
+	padding: 1px 6px;
+}
+.path {
+	display: inline-block;
+	font-family: ui-monospace, Consolas, monospace;
+	font-size: 13px;
+	background: var(--chip-bg);
+	color: var(--chip-ink);
+	border-radius: 7px;
+	padding: 3px 12px;
+	margin: 4px 6px 8px 0;
+	cursor: pointer;
+	border: none;
+}
+.path:hover { filter: brightness(1.3); }
+.path:focus-visible { outline: 2px solid var(--gold); }
+/* ==== ลูปเกม ==== */
+.loop {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin: 18px 0 8px;
+}
+.loop .step {
+	flex: 1 1 150px;
+	background: var(--panel);
+	border: 1px solid var(--line);
+	border-top: 3px solid var(--gold);
+	border-radius: 10px;
+	padding: 12px 14px;
+	font-size: 14.5px;
+}
+.loop .step b { display: block; font-size: 15.5px; margin-bottom: 2px; }
+.loop .step .n {
+	color: var(--gold);
+	font-weight: 800;
+	font-size: 12px;
+	letter-spacing: 0.1em;
+}
+/* ==== ตัวเลข ==== */
+.stats {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	gap: 10px;
+	margin: 16px 0;
+}
+.stat {
+	background: var(--panel);
+	border: 1px solid var(--line);
+	border-radius: 10px;
+	padding: 14px 16px;
+	text-align: center;
+}
+.stat .v {
+	font-size: 30px;
+	font-weight: 800;
+	color: var(--gold);
+	font-variant-numeric: tabular-nums;
+	line-height: 1.2;
+}
+.stat .k { font-size: 13.5px; color: var(--muted); }
+/* ==== การ์ดคู่มือ ==== */
+.cards {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+	gap: 14px;
+	margin: 18px 0;
+}
+.card {
+	background: var(--panel);
+	border: 1px solid var(--line);
+	border-radius: 12px;
+	overflow: hidden;
+}
+.card summary {
+	cursor: pointer;
+	list-style: none;
+	padding: 15px 18px 13px;
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+}
+.card summary::-webkit-details-marker { display: none; }
+.card summary:hover { background: var(--panel2); }
+.card summary:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+.card summary .t { font-weight: 700; font-size: 16.5px; }
+.card summary .d { color: var(--muted); font-size: 13.5px; }
+.card summary .arrow { margin-left: auto; color: var(--gold); transition: transform 0.15s; flex: none; }
+.card[open] summary .arrow { transform: rotate(90deg); }
+@media (prefers-reduced-motion: reduce) { .card summary .arrow { transition: none; } }
+.card .body { padding: 2px 18px 16px; border-top: 1px dashed var(--line); font-size: 15.5px; }
+.warn, .good {
+	border-radius: 9px;
+	padding: 11px 15px;
+	margin: 12px 0 4px;
+	font-size: 15px;
+}
+.warn { background: var(--red-bg); border-left: 4px solid var(--red); }
+.warn > strong:first-child { color: var(--red); }
+.good { background: var(--green-bg); border-left: 4px solid var(--green); }
+.good > strong:first-child { color: var(--green); }
+/* ==== ตาราง ==== */
+.tablewrap { overflow-x: auto; margin: 12px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; background: var(--panel); }
+th, td { text-align: left; padding: 9px 13px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th {
+	font-size: 11.5px;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--gold);
+	background: var(--panel2);
+}
+td.r { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* ==== สีอาร์ต ==== */
+.swatches { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; }
+.sw { width: 118px; font-size: 12.5px; color: var(--muted); }
+.sw .c {
+	height: 52px;
+	border-radius: 9px;
+	border: 1px solid rgba(0,0,0,0.18);
+	margin-bottom: 4px;
+}
+.sw b { color: var(--ink); display: block; font-size: 13px; }
+.toast {
+	position: fixed;
+	bottom: 22px;
+	left: 50%;
+	transform: translateX(-50%);
+	background: var(--chip-bg);
+	color: var(--chip-ink);
+	padding: 8px 20px;
+	border-radius: 999px;
+	font-size: 14px;
+	opacity: 0;
+	transition: opacity 0.25s;
+	pointer-events: none;
+}
+.toast.show { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
+footer {
+	border-top: 1px solid var(--line);
+	color: var(--muted);
+	font-size: 13.5px;
+	text-align: center;
+	padding: 26px 20px 40px;
+}
+</style>
+
+<div class="topbar"><div class="in">
+	<span class="brand">⬢ TOK HQ</span>
+	<a href="#game">รู้จักเกม</a>
+	<a href="#numbers">ตัวเลข</a>
+	<a href="#howto">คู่มือแก้ของ</a>
+	<a href="#style">กติกา & สไตล์</a>
+	<a href="#money">การเงิน</a>
+	<a href="#danger">ห้ามแตะ</a>
+</div></div>
+
+<div class="hero">
+	<h1 class="logo">TURRET OF KING</h1>
+	<p class="tag">ศูนย์รวมข้อมูลทีม — เกมคืออะไร เลขสำคัญอยู่ไหน แก้อะไรได้ที่ไหนใน Studio
+	และเส้นไหนห้ามข้าม ทุกอย่างจบในหน้าเดียว</p>
+	<span class="alpha">ALPHA TEST</span>
+</div>
+
+<main>
+
+<h2 id="game"><span class="hex"></span>รู้จักเกมใน 1 นาที</h2>
+<p class="lede">เกมสงครามยึดพื้นที่บนเกาะหกเหลี่ยมลอยฟ้า 156 แผ่น — ผู้เล่นแต่ละคนถือเกาะบ้านของตัวเอง
+ปั้นกองทัพ แล้วชิงเกาะกลางที่ให้รายได้สองเท่า <strong>ไม่มีวันจบเกม</strong> (ตั้งใจออกแบบเป็นลูปสะสมไม่รู้จบ ไม่มีหน้าสรุปแพ้ชนะ)</p>
+<div class="loop">
+	<div class="step"><span class="n">1</span><b>ป้อมเกิดเอง</b>บนที่ดินของผู้เล่น ทุก 3 วินาที ผลิตเหรียญทุกวินาที</div>
+	<div class="step"><span class="n">2</span><b>เดินชนเพื่อยก</b>แล้วหิ้วไปวางชนป้อมเลเวลเดียวกัน = รวมร่างแรงขึ้น</div>
+	<div class="step"><span class="n">3</span><b>อัปเกรด</b>ด้วยเหรียญ: เทียร์ป้อม จำนวนป้อม เวลาโล่ — เพชรใช้กับของถาวร/สกิน</div>
+	<div class="step"><span class="n">4</span><b>เปิดสงคราม</b>โหมดมุมสูง เลือกป้อมร่วมยิง ถล่มฐานคนอื่น ปล้นบอทได้ค่าหัว</div>
+	<div class="step"><span class="n">5</span><b>ยึดเกาะกลาง</b>รายได้ ×2 ต่อช่อง — พื้นที่เดียวในเกมที่แย่งกันได้จริง</div>
+	<div class="step"><span class="n">6</span><b>Rebirth</b>รีเซ็ตแลกโบนัสรายได้ถาวร แล้ววนใหม่ให้ไกลกว่าเดิม</div>
+</div>
+<p>เซิร์ฟเวอร์คนน้อยจะมี <strong>บอท AI สวมอวตารคนจริง</strong> มาถือเกาะ เดินเล่น และรบกันเองให้แมพคึกเสมอ
+(บอทแพ้คนได้เสมอ ตีฐานคนไม่แตกโดยกติกา) ผู้เล่นใหม่มี<strong>ทัวร์สอนเล่นบังคับ 15 ขั้น</strong>พาเล่นครบลูปตั้งแต่ล็อบบี้</p>
+
+<h2 id="numbers"><span class="hex"></span>ตัวเลขสำคัญ</h2>
+<div class="stats">
+	<div class="stat"><div class="v">120</div><div class="k">ผู้เล่น / เซิร์ฟเวอร์</div></div>
+	<div class="stat"><div class="v">156</div><div class="k">แผ่นเกาะ (120 บ้าน + 36 กลาง)</div></div>
+	<div class="stat"><div class="v">35</div><div class="k">เลเวลป้อม</div></div>
+	<div class="stat"><div class="v">60</div><div class="k">บอท AI สูงสุด</div></div>
+	<div class="stat"><div class="v">9</div><div class="k">สกินพื้นที่</div></div>
+	<div class="stat"><div class="v">17</div><div class="k">เควส (วัน/สัปดาห์/เดือน)</div></div>
+</div>
+
+<h2 id="howto"><span class="hex"></span>คู่มือแก้ของใน Studio</h2>
+<p class="lede">ทุกใบด้านล่างคือของที่ทีมแก้เองได้โดยไม่แตะโค้ด — กดการ์ดเพื่อกางรายละเอียด
+กดกล่องดำ (ชื่อ path) เพื่อคัดลอกชื่อไปวางในช่องค้นหาของ Explorer</p>
+
+<div class="good" style="max-width:none"><strong>กติกาทอง:</strong>
+แก้ตอน<strong>ไม่ได้กด Play</strong> เท่านั้น (แก้ระหว่างเล่นทดสอบ = งานหายตอน Stop) ·
+แก้เสร็จกด Play ดูของจริงหนึ่งรอบ · ข้อความที่ผู้เล่นเห็น = อังกฤษเสมอ · ไอคอนหนึ่งรูปหนึ่งความหมาย · ไม่แน่ใจถามก่อน</div>
+
+<div class="cards">
+
+<details class="card"><summary><span class="t">🎚️ ค่าเกม / ราคา</span><span class="d">ตัวเลขทั้งเกมในไฟล์เดียว</span><span class="arrow">▸</span></summary><div class="body">
+	<button class="path">ReplicatedStorage › Config › GameConfig</button>
+	<p>ดับเบิลคลิกเปิด ข้างในคือ <code>ชื่อค่า = ตัวเลข</code> พร้อมคอมเมนต์ไทยทุกบรรทัด — <strong>แก้เฉพาะตัวเลขหลัง =</strong></p>
+	<ul>
+		<li><code>BOT_FILL_TO</code>/<code>BOT_MAX</code> จำนวนบอท · <code>BARRIER_DURATION</code> เวลาโล่ · <code>UPGRADE_TIER_COST</code> ราคาอัปเกรด</li>
+		<li><code>DATA_MOCK</code> = <code>true</code> ทำให้กด Play ใน Studio เป็น "ผู้เล่นใหม่" เสมอ ไม่แตะเซฟจริง (สลับ <code>false</code> ถ้าอยากเทสต์ด้วยเซฟตัวเอง)</li>
+	</ul>
+	<div class="warn"><strong>ห้าม:</strong> แตะ <code>CELL_COUNT</code> และค่าที่ขึ้นต้น <code>GAMEPASS_</code>/<code>DEVPRODUCT_</code> — เป็นรหัสอ้างอิงระบบเงินจริง</div>
+</div></details>
+
+<details class="card"><summary><span class="t">🔊 เสียง</span><span class="d">ใส่เสียง/เพลงเองได้ทั้งเกม</span><span class="arrow">▸</span></summary><div class="body">
+	<button class="path">ReplicatedStorage › Sounds</button>
+	<p>ก้อน Sound ตั้งชื่อตามจุดใช้ มี Attribute <code>Note</code> อธิบายไทยว่าเสียงดังตอนไหน — วางรหัสเสียงในช่อง <code>SoundId</code> ก็จบ (ว่าง = เงียบเฉยๆ ไม่พัง)</p>
+	<ul>
+		<li><strong>เสียงสุ่มหลายแบบ:</strong> ก๊อปแล้วตั้งชื่อ <code>Merge02</code>…<code>09</code> — เกมสุ่มเล่นเอง</li>
+		<li><strong>เพลงในเกม:</strong> <code>BgGame</code>/<code>BgGame2</code>/<code>BgGame3</code> สุ่มหมุนเวียนไม่ซ้ำเพลงติดกัน</li>
+		<li>แก้ id แล้วต้องออก-เข้าเกมใหม่ถึงได้ยิน</li>
+	</ul>
+</div></details>
+
+<details class="card"><summary><span class="t">🏰 โมเดลป้อม</span><span class="d">เปลี่ยนหน้าตาป้อม 35 เลเวล</span><span class="arrow">▸</span></summary><div class="body">
+	<button class="path">ReplicatedStorage › TurretTemplates</button>
+	<p>โมเดล <code>Turret1</code>–<code>Turret35</code> วางแทนตัวเดิมได้เลย โดยรักษากติกา:</p>
+	<ul>
+		<li>ชิ้น <code>Base</code> (PrimaryPart) 3×1×3 <strong>ล่องหน + Anchored</strong> ก้นโมเดลเสมอก้น Base</li>
+		<li>ชิ้นอื่น: Anchored <strong>ปิด</strong>, CanCollide ปิด, CastShadow ปิด, เชื่อม Base ด้วย <strong>WeldConstraint</strong> — ห้ามมี Weld เก่าติดจากไฟล์ import (ทำป้อมจมพื้น)</li>
+		<li>ป้าย <code>TurretInfo</code> ใต้ Base ต้องอยู่ และข้อความ <code>Lv.X</code> ต้องตรงเลขชื่อโมเดล</li>
+	</ul>
+	<div class="good"><strong>กันพลาด:</strong> ลบ/เปลี่ยนชื่อ template ชั่วคราวเกมไม่พัง — ระบบยืมเลเวลใกล้เคียงโชว์แทน</div>
+</div></details>
+
+<details class="card"><summary><span class="t">✨ เอฟเฟกต์ (FX)</span><span class="d">โล่ / รวมร่าง / อีเวนต์ / อุกกาบาต</span><span class="arrow">▸</span></summary><div class="body">
+	<button class="path">ReplicatedStorage › FxTemplates</button>
+	<ul>
+		<li><code>BarrierFx</code> โล่ครอบเซลล์ — ต้องมีชิ้น <code>Shell</code> (เกมยืดให้) ของแต่งใส่เป็นลูกของ Shell</li>
+		<li><code>MergeFx</code> ตอนรวมร่าง — emitter/เสียงอิสระ จำนวนพ่นอยู่ Attribute <code>EmitCount</code></li>
+		<li><code>EventFx</code> ป้ายอีเวนต์เซลล์กลาง — PrimaryPart คือชิ้นฐาน เกมวางแนบพื้นให้</li>
+		<li><code>CannonFx</code> อุกกาบาต (<code>Meteor</code> Tier1–3) + ระเบิด (<code>Bomb</code>) — เกมย่อขยายพอดีพื้นที่เอง</li>
+	</ul>
+	<p>เกมอ่านสดทุกครั้งที่ใช้ — วางของใหม่แล้วกด Play เห็นเลย</p>
+</div></details>
+
+<details class="card"><summary><span class="t">🌸 สกินพื้นที่</span><span class="d">Skin2–Skin9</span><span class="arrow">▸</span></summary><div class="body">
+	<button class="path">ReplicatedStorage › SkinTiles</button>
+	<ul>
+		<li>PrimaryPart ชื่อ <code>Tile</code> = แผ่นทั้งก้อน (เกมยืดเท่าเซลล์จริง) ชิ้นอื่นวางเทียบผิวบน Tile</li>
+		<li>ชิ้นชื่อ <code>Cap</code> = พื้นหญ้าที่ถูกย้อมสีสถานะ — ห้ามเปลี่ยนชื่อ</li>
+		<li>ทุกชิ้นปิด CanCollide/CanQuery/CanTouch · ของสูงอยู่วงริมแผ่น กลางแผ่นคือเขตวางป้อม (ของแบน ≤ 0.5 เท่านั้น)</li>
+	</ul>
+	<div class="warn"><strong>กติกาดีไซน์:</strong> สกินห้ามกลบสีสถานะ (ทอง/ส้ม) และแต่ละสกินต้องมีเอกลักษณ์ prop ของตัวเอง ไม่ใช่ย้อมสีของสกินอื่น</div>
+</div></details>
+
+<details class="card"><summary><span class="t">🛹 ยานพาหนะ / อนิเมชัน</span><span class="d">บอร์ด 4 แบบ + ท่าขี่</span><span class="arrow">▸</span></summary><div class="body">
+	<button class="path">ReplicatedStorage › VehicleBoards</button>
+	<p><code>Vehicle1</code>–<code>4</code> — PrimaryPart เป็นชิ้นล่องหนชื่อ <code>Root</code> แกนตรง แล้ว weld เมชทั้งหมดเข้ากับมัน ทุกชิ้นปิด collide + massless</p>
+	<button class="path">ReplicatedStorage › Animations</button>
+	<p><code>RideIdle</code>/<code>RideMove</code>/<code>RideAir</code> — วางรหัสอนิเมชันของกลุ่มในช่อง <code>AnimationId</code></p>
+</div></details>
+
+<details class="card"><summary><span class="t">🎟️ โค้ดของขวัญ</span><span class="d">แจกโค้ดกิจกรรมเอง</span><span class="arrow">▸</span></summary><div class="body">
+	<button class="path">ServerScriptService › Codes</button>
+	<p>เพิ่มหนึ่งบรรทัดต่อหนึ่งโค้ดตามแบบในไฟล์: <code>ชื่อโค้ด = { gems = 100, money = 5000 },</code></p>
+	<ul>
+		<li>ชื่อโค้ด: อังกฤษพิมพ์ใหญ่+ตัวเลข ไม่มีช่องว่าง (ผู้เล่นพิมพ์เล็กได้)</li>
+		<li>คนละ 1 ครั้งต่อโค้ดถาวร — แจกรอบใหม่ = ตั้งโค้ดใหม่ · ลบบรรทัด = โค้ดหมดอายุ</li>
+	</ul>
+	<div class="warn"><strong>สำคัญ:</strong> ไฟล์นี้จงใจอยู่ฝั่งเซิร์ฟเวอร์กันผู้เล่นส่องโค้ด — ห้ามย้าย และอย่าหลุดโค้ดก่อนเวลาแจก</div>
+</div></details>
+
+<details class="card"><summary><span class="t">📜 เควส / ราคาสกิน</span><span class="d">ชื่อ เป้าหมาย รางวัล ราคา</span><span class="arrow">▸</span></summary><div class="body">
+	<button class="path">ReplicatedStorage › Shared › QuestConfig</button>
+	<button class="path">ReplicatedStorage › Shared › SkinConfig</button>
+	<button class="path">ReplicatedStorage › Shared › VehicleConfig</button>
+	<p>แก้ชื่อ (อังกฤษ) คำอธิบาย ราคาเพชร เป้าหมาย/รางวัลเควสได้อิสระ</p>
+	<div class="warn"><strong>ห้ามเด็ดขาด:</strong> เปลี่ยน/ใช้ซ้ำ "เลข id" ของสกินและยาน — เซฟผู้เล่นจำของที่ซื้อด้วยเลขนี้ตลอดไป ของใหม่ = เลขถัดไปเสมอ</div>
+</div></details>
+
+<details class="card"><summary><span class="t">📢 ประกาศอัปเดต</span><span class="d">Update Log + ของขวัญเวอร์ชัน</span><span class="arrow">▸</span></summary><div class="body">
+	<button class="path">ReplicatedStorage › Shared › UpdateLog</button>
+	<p>เพิ่มรายการเวอร์ชันใหม่<strong>บนสุด</strong> (หัวข้อ+วันที่+bullet อังกฤษ) แล้วขยับ <code>UPDATE_ID</code> ใน GameConfig ให้ตรง
+	(ของขวัญ: <code>UPDATE_GIFT_GEMS</code>/<code>UPDATE_GIFT_MONEY</code>)</p>
+	<p>ของขวัญรับได้เฉพาะเวอร์ชันปัจจุบัน คนละครั้ง — พลาดแล้วพลาดเลย (ตั้งใจให้คนตามอัปเดต)</p>
+</div></details>
+
+<details class="card"><summary><span class="t">🌐 นอก Studio — Creator Hub</span><span class="d">create.roblox.com</span><span class="arrow">▸</span></summary><div class="body">
+	<ul>
+		<li><strong>ราคา Robux</strong> ของ Pass/Product แก้ที่หน้า asset — ในเกมโชว์ราคาสดเสมอ</li>
+		<li><strong>จำนวนผู้เล่น/เซิร์ฟเวอร์</strong>: หน้า place → Access → Maximum Visitor Count (ค่าใน Studio เป็นแค่ป้าย)</li>
+		<li>อัปโหลดรูป/เสียง/โมเดล<strong>ในนามกลุ่ม</strong>เสมอ ไม่ใช่บัญชีส่วนตัว</li>
+	</ul>
+</div></details>
+
+</div>
+
+<h2 id="style"><span class="hex"></span>กติกาทีม & สไตล์อาร์ต</h2>
+<p class="lede">เอกลักษณ์ภาพของเกมคือ <strong>"Steampunk Wood & Gold"</strong> — การ์ตูนตะวันตกอบอุ่น
+ไม้เข้ม ขอบบรอนซ์หมุดย้ำ กระดาษครีม ทองเป็นพระเอก</p>
+<div class="swatches">
+	<div class="sw"><div class="c" style="background:#3a2a18"></div><b>ไม้เข้ม</b>พื้นพาเนล</div>
+	<div class="sw"><div class="c" style="background:#8c5a2a"></div><b>บรอนซ์</b>ขอบ/กรอบ</div>
+	<div class="sw"><div class="c" style="background:#efddb5"></div><b>ครีมกระดาษ</b>ตัวหนังสือ</div>
+	<div class="sw"><div class="c" style="background:#ffd24a"></div><b>ทอง</b>ของเด่น/ของเรา</div>
+	<div class="sw"><div class="c" style="background:#58a83c"></div><b>เขียว</b>ปุ่มยืนยัน (CTA)</div>
+	<div class="sw"><div class="c" style="background:#e08a2e"></div><b>ส้มอิฐ</b>แจ้งเตือน/มีเจ้าของ</div>
+	<div class="sw"><div class="c" style="background:#c74a32"></div><b>แดง</b>ย้อนกลับ/อันตราย</div>
+</div>
+<h3>กติกาที่ตกลงกันแล้ว (อย่าเผลอฝ่า)</h3>
+<ul>
+	<li><strong>ตัวหนังสือผู้เล่นเห็น = อังกฤษทั้งหมด</strong> ขนาดขั้นต่ำ 16px (เนื้อหา 18–20, หัวข้อ 22+)</li>
+	<li><strong>ไอคอนหนึ่งรูป = หนึ่งความหมาย</strong> ห้ามใช้ข้ามความหมาย ทุกไอเทม/เทียร์มีไอคอนของตัวเอง</li>
+	<li><strong>โมชัน "พรีเมียม"</strong>: นุ่ม ไม่เด้งเกิน (ยกเว้นป้อมเด้งตอนเกิด — อนุมัติแล้ว) เข้า-ช้าลง ออก-เร่ง 200–400ms</li>
+	<li>ทุกพาเนล<strong>ปิดด้วยปุ่ม X เท่านั้น</strong> (แตะพื้นหลังไม่ปิด) และเปิด-ปิดมีโมชันเสมอ</li>
+	<li>ของตกแต่งแมพใหม่ต้อง <strong>Locked = true</strong> กันคลิกพลาดในไวพอร์ต</li>
+</ul>
+
+<h2 id="money"><span class="hex"></span>ของขายในเกม (อ้างอิงทีม)</h2>
+<div class="tablewrap"><table>
+	<tr><th>ประเภท</th><th>ชื่อ</th><th>ให้อะไร</th><th class="r">ราคา</th></tr>
+	<tr><td rowspan="4">Game Pass</td><td>VIP</td><td>เงิน ×2 · ถือเกาะกลางได้ 2 ช่อง · แท็กทอง [VIP]</td><td class="r">ดูใน Hub</td></tr>
+	<tr><td>Gem Doubler</td><td>เพชรจากเควส ×2</td><td class="r">ดูใน Hub</td></tr>
+	<tr><td>Fast Spawner</td><td>ป้อมเกิดเร็ว ×2</td><td class="r">ดูใน Hub</td></tr>
+	<tr><td>Auto Merge</td><td>รวมร่างอัตโนมัติ 4 คู่/นาที</td><td class="r">ดูใน Hub</td></tr>
+	<tr><td rowspan="6">Dev Product</td><td>Offline ×2</td><td>คูณรายได้ตอนออฟไลน์ (มีทางดูโฆษณาฟรีด้วย)</td><td class="r">R$ 9</td></tr>
+	<tr><td>Barrier Reset</td><td>ล้างคูลดาวน์โล่ทันที</td><td class="r">R$ 19</td></tr>
+	<tr><td>Rebuild</td><td>คืนกองทัพที่เสียตอนฐานแตกทันที</td><td class="r">R$ 29</td></tr>
+	<tr><td>Cannon: Strike</td><td>ทำลาย 1 เซลล์ศัตรู (ไม่ยึดให้)</td><td class="r">R$ 49</td></tr>
+	<tr><td>Cannon: Island Nuke</td><td>ทำลายทั้งเกาะนอก 12 เซลล์</td><td class="r">R$ 149</td></tr>
+	<tr><td>Cannon: Armageddon</td><td>ทำลายทุกเซลล์ทั้งแมพ</td><td class="r">R$ 499</td></tr>
+</table></div>
+<p>สกิน 8 แบบขายด้วย<strong>เพชร</strong> (150–2,000) + สกิน "Supporter" แจกฟรีเมื่อเข้ากลุ่ม — เพชรได้จากเควสเป็นหลัก</p>
+
+<h2 id="danger"><span class="hex"></span>โซนห้ามแตะ</h2>
+<div class="warn"><strong>แตะแล้วเกมพังทันที — ห้ามแก้ไม่ว่ากรณีใด:</strong>
+<ul>
+	<li><code>ServerScriptService › Network</code> และ <code>ReplicatedStorage › Network</code> — โค้ดสร้างจากเครื่องมือ แก้มือ = ผู้เล่นหลุดยกเซิร์ฟเวอร์</li>
+	<li><code>ServerScriptService › Services</code> ทั้งโฟลเดอร์ — ระบบเกม (อยากได้อะไรบอก dev)</li>
+	<li><code>workspace › Areas</code> — แผ่นเกาะจริง 156 แผ่น มีข้อมูลฝังทุกแผ่น</li>
+</ul></div>
+<div class="warn"><strong>ของคนอื่น:</strong> <code>workspace › VFX</code> คือพื้นที่ทีม VFX ที่ทำงาน live — ใครไม่ใช่เจ้าของห้ามแตะ/ลบ</div>
+<p>ของตกแต่งแมพ (<code>workspace › Environment</code>) ล็อคกันคลิกพลาดไว้ — แก้ผ่าน Explorer แล้วล็อคคืนเสมอ</p>
+
+</main>
+
+<footer>Turret of King — เอกสารภายในทีม · อัปเดตล่าสุด สิงหาคม 2026 · สงสัยอะไรถามในกลุ่มได้เลย</footer>
+
+<div class="toast" id="toast">คัดลอกแล้ว — วางในช่องค้นหา Explorer ได้เลย</div>
+<script>
+const toast = document.getElementById("toast");
+let hideTimer;
+document.querySelectorAll(".path").forEach((el) => {
+	el.title = "กดเพื่อคัดลอกชื่อ";
+	el.addEventListener("click", (e) => {
+		e.preventDefault();
+		const parts = el.textContent.split("›");
+		navigator.clipboard.writeText(parts[parts.length - 1].trim()).then(() => {
+			toast.classList.add("show");
+			clearTimeout(hideTimer);
+			hideTimer = setTimeout(() => toast.classList.remove("show"), 1800);
+		});
+	});
+});
+</script>
+
+</body>
+</html>
